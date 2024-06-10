@@ -11,40 +11,39 @@ import (
 )
 
 func readJsonFile[T any](t *testing.T, path string) T {
-  c := require.New(t)
+	c := require.New(t)
 
-  body, err := os.ReadFile(path)
-  c.NoError(err)
+	body, err := os.ReadFile(path)
+	c.NoError(err)
 
-  var response T
+	var response T
 
-  err = json.Unmarshal(body, &response)
-  c.NoError(err)
+	err = json.Unmarshal(body, &response)
+	c.NoError(err)
 
-  return response
+	return response
 }
 
 func TestParserPokemonSuccess(t *testing.T) {
 	c := require.New(t)
 
-  response := readJsonFile[models.PokeApiPokemonResponse](t, "../utils/samples/pokeapi_response.json")
+	response := readJsonFile[models.PokeApiPokemonResponse](t, "../utils/samples/pokeapi_response.json")
 
 	pokemon, err := utils.ParsePokemon(response)
-  c.NoError(err)
+	c.NoError(err)
 
-  expectedPokemon := readJsonFile[*models.Pokemon](t, "../utils/samples/api_response.json")
+	expectedPokemon := readJsonFile[*models.Pokemon](t, "../utils/samples/api_response.json")
 
-  c.Equal(expectedPokemon, pokemon)
+	c.Equal(expectedPokemon, pokemon)
 }
 
 func TestParserPokemonTypeNotFound(t *testing.T) {
-  c := require.New(t)
+	c := require.New(t)
 
-  response := readJsonFile[models.PokeApiPokemonResponse](t, "../utils/samples/pokeapi_response.json")
-  response.PokemonType = []models.PokemonType{}
+	response := readJsonFile[models.PokeApiPokemonResponse](t, "../utils/samples/pokeapi_response.json")
+	response.PokemonType = []models.PokemonType{}
 
-  _, err := utils.ParsePokemon(response)
-  c.NotNil(err)
-  c.EqualError(utils.ErrNotFoundPokemonType, err.Error())
+	_, err := utils.ParsePokemon(response)
+	c.NotNil(err)
+	c.EqualError(utils.ErrNotFoundPokemonType, err.Error())
 }
-
