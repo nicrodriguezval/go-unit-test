@@ -1,6 +1,6 @@
 package models
 
-type PokeApiPokemonResponse struct {
+type PokeapiPokemonResponse struct {
 	Name        string        `json:"name"`
 	PokemonType []PokemonType `json:"types"`
 	Stats       []PokemonStat `json:"stats"`

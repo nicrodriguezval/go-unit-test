@@ -13,7 +13,7 @@ var (
 	ErrNotFoundPokemonTypeName = errors.New("pokemon type name not found")
 )
 
-func ParsePokemon(apiPokemon models.PokeApiPokemonResponse) (*models.Pokemon, error) {
+func ParsePokemon(apiPokemon *models.PokeapiPokemonResponse) (*models.Pokemon, error) {
 	if len(apiPokemon.PokemonType) < 1 {
 		return nil, ErrNotFoundPokemonType
 	}
