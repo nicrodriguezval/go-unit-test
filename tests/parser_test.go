@@ -31,3 +31,17 @@ func TestParserPokemonTypeNotFound(t *testing.T) {
 	c.NotNil(err)
 	c.EqualError(utils.ErrNotFoundPokemonType, err.Error())
 }
+
+// go test ./tests -bench= >bench.old
+func BenchmarkParserPokemon(b *testing.B) {
+  c := require.New(b)
+
+  response := utils.ReadJsonFile[*models.PokeapiPokemonResponse](b, utils.POKEAPI_RESPONSE_PATH)
+
+  b.ResetTimer()
+
+  for i := 0; i < b.N; i++ {
+    _, err := utils.ParsePokemon(response)
+    c.NoError(err)
+  }
+}

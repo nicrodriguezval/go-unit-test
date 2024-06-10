@@ -5,7 +5,6 @@ package utils
 import (
 	"encoding/json"
 	"os"
-	"testing"
 
 	"github.com/stretchr/testify/require"
 )
@@ -15,7 +14,7 @@ const (
   API_RESPONSE_PATH = "../utils/samples/api_response.json"
 )
 
-func ReadJsonFile[T any](t *testing.T, path string) T {
+func ReadJsonFile[T any, Testing require.TestingT](t Testing, path string) T {
 	c := require.New(t)
 
 	body, err := os.ReadFile(path)
