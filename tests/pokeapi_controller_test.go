@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 
+	"github.com/gorilla/mux"
 	"github.com/jarcoal/httpmock"
 	controller "github.com/nicrodriguezval/unit-test/controllers"
 	"github.com/nicrodriguezval/unit-test/models"
@@ -47,5 +49,31 @@ func TestGetPokemonFromPokeapiWithMocksSuccess(t *testing.T) {
   err = json.Unmarshal(body, &expectedPokemon)
   c.NoError(err)
 
+  c.Equal(expectedPokemon, pokemon)
+}
+
+func TestGetPokemon(t *testing.T) {
+  c := require.New(t)
+
+  r, err := http.NewRequest("GET", "/pokemon/{id}", nil)
+  c.NoError(err)
+
+  vars := map[string]string{
+    "id": "bulbasaur",
+  }
+
+  r = mux.SetURLVars(r, vars)
+  w := httptest.NewRecorder()
+
+  controller.GetPokemon(w, r)
+
+  var pokemon *models.Pokemon
+
+  err = json.Unmarshal(w.Body.Bytes(), &pokemon)
+  c.NoError(err)
+
+  expectedPokemon := utils.ReadJsonFile[*models.Pokemon](t, utils.API_RESPONSE_PATH)
+
+  c.Equal(http.StatusOK, w.Code)
   c.Equal(expectedPokemon, pokemon)
 }
