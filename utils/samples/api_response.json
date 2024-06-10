@@ -1,0 +1,11 @@
+{
+  "Abilities": {
+    "Attack": 49,
+    "Defense": 49,
+    "Hp": 45,
+    "Speed": 45
+  },
+  "Name": "bulbasaur",
+  "Type": "grass",
+  "Id": 1
+}
